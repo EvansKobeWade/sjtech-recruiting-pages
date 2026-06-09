@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>生境科技招聘简历系统</title>
+    <link rel="stylesheet" href="/recruiting.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">S</div>
+          <div>
+            <strong>生境科技</strong>
+            <span>招聘简历系统</span>
+          </div>
+        </div>
+        <nav class="nav" aria-label="招聘系统导航">
+          <a href="#collect" class="active">上传</a>
+          <a href="#ranking">JD管理</a>
+          <a href="#pipeline">跟进</a>
+          <a href="#talents">人才库</a>
+          <a href="#calendar">日历</a>
+          <a href="#interviewers">面试官</a>
+        </nav>
+        <div class="side-note">
+          <strong>主线</strong>
+          <span>上传 -> JD -> 推荐 -> 面试</span>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Sengine Recruiting</p>
+            <h1>招聘工作台</h1>
+          </div>
+        </header>
+
+        <section class="stats-strip" aria-label="招聘统计">
+          <article class="stat-card" id="todayCard">
+            <span>今日</span>
+            <strong id="todayUploads">0</strong>
+            <small>今日 S 级 <b id="todayS">0</b> / 面试 <b id="todayInterview">0</b></small>
+          </article>
+          <article class="stat-card" id="weekCard">
+            <span>本周</span>
+            <strong id="weekUploads">0</strong>
+            <small>本周 S 级 <b id="weekS">0</b> / 面试 <b id="weekInterview">0</b></small>
+          </article>
+          <article class="stat-card" id="monthCard">
+            <span>本月</span>
+            <strong id="monthUploads">0</strong>
+            <small>本月 S 级 <b id="monthS">0</b> / 面试 <b id="monthInterview">0</b></small>
+          </article>
+          <article class="stat-card" id="hireCard">
+            <span>入职人才</span>
+            <strong id="hireCount">0</strong>
+            <small id="hireNames">本周 / 本月入职展示</small>
+          </article>
+        </section>
+
+        <section class="flow-line" aria-label="系统流程">
+          <strong>招聘流程</strong>
+          <span>上传简历</span>
+          <span>编辑JD</span>
+          <span>AI推荐</span>
+          <span>加入面试</span>
+          <span>跟进入职</span>
+        </section>
+
+        <section id="collect" class="section-grid">
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>上传简历</h2>
+              </div>
+              <label class="file-button primary upload-main">
+                批量上传简历
+                <input id="resumeInput" type="file" multiple accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" />
+              </label>
+            </div>
+            <div class="collect-grid">
+              <div class="input-group">
+                <label>投递岗位</label>
+                <select id="applyRoleSelect"></select>
+              </div>
+              <button id="mockUploadBtn">模拟上传2份</button>
+            </div>
+            <div class="queue" id="queue"></div>
+          </article>
+
+          <article class="panel compact-panel rule-card">
+            <h2>入库规则</h2>
+            <p>入库后进入待面试。</p>
+          </article>
+        </section>
+
+        <section id="ranking" class="section-grid">
+          <article class="panel jd-panel">
+            <div class="panel-head">
+              <div>
+                <h2>JD管理</h2>
+                <p>选择岗位后直接编辑 JD，保存后用于 AI 推荐。</p>
+              </div>
+              <div class="jd-actions">
+                <select id="jdSelect"></select>
+                <label class="file-button">
+                  上传JD
+                  <input id="jdInput" type="file" accept=".txt,.md,.doc,.docx,.pdf" />
+                </label>
+              </div>
+            </div>
+            <textarea id="jdEditor" class="jd-editor" placeholder="编辑岗位JD：职责、必备能力、加分项。"></textarea>
+            <div class="jd-toolbar">
+              <button class="primary" id="saveJdBtn">保存JD并推荐</button>
+              <span class="muted" id="jdHint">推荐会结合 JD 和简历 OCR 摘要。</span>
+            </div>
+            <div class="rank-list" id="rankList"></div>
+          </article>
+
+          <article class="panel compact-panel">
+            <h2>推荐JD</h2>
+            <div class="recommended-jd-list" id="recommendedJdList"></div>
+          </article>
+        </section>
+
+        <section id="pipeline" class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>招聘跟进 <span class="title-badge" id="openRoleCount">0个岗位招聘中</span></h2>
+              <p>按岗位看招聘进度。</p>
+            </div>
+            <select id="pipelineRoleSelect"></select>
+          </div>
+          <div class="position-summary" id="positionSummary"></div>
+          <div class="pipeline-board" id="pipelineBoard"></div>
+        </section>
+
+        <section id="talents" class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>人才库</h2>
+              <p>看摘要、排面试、记面试记录。</p>
+            </div>
+            <button id="syncBtn">同步飞书数据库</button>
+          </div>
+          <div class="filters">
+            <input id="searchInput" placeholder="搜索姓名、学校、联系方式、技能" />
+            <select id="workTypeFilter">
+              <option value="">全部类型</option>
+              <option>实习</option>
+              <option>正职</option>
+            </select>
+            <select id="gradeFilter">
+              <option value="">全部等级</option>
+              <option>S级</option>
+              <option>A级</option>
+              <option>待定</option>
+            </select>
+            <select id="roleFilter">
+              <option value="">全部岗位</option>
+              <option>Agent工程师</option>
+              <option>多模态算法</option>
+              <option>CV算法</option>
+              <option>3D算法</option>
+              <option>推荐系统</option>
+            </select>
+            <select id="interviewFilter">
+              <option value="">全部状态</option>
+              <option>待面试</option>
+              <option>一面</option>
+              <option>已完成一面</option>
+              <option>二面</option>
+              <option>已完成二面</option>
+              <option>终面</option>
+              <option>Offer</option>
+              <option>已入职</option>
+            </select>
+          </div>
+          <div class="talent-list" id="talentCards"></div>
+        </section>
+
+        <section id="calendar" class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>日历</h2>
+              <p>面试、跟进、入职。</p>
+            </div>
+            <strong id="calendarTitle"></strong>
+          </div>
+          <div class="calendar" id="calendarGrid"></div>
+        </section>
+
+        <section id="interviewers" class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>面试官看板</h2>
+              <p>统计每位面试官累计面试次数。</p>
+            </div>
+          </div>
+          <div class="interviewer-board" id="interviewerBoard"></div>
+        </section>
+      </main>
+    </div>
+
+    <div class="toast" id="toast"></div>
+    <script src="/recruiting.js"></script>
+  </body>
+</html>
